@@ -7,5 +7,6 @@ class SqlitePlugin(info : ProjectInfo) extends PluginProject(info) {
   override def mainResourcesPath   = "lib"
   override def testScalaSourcePath = "tests"
 
-  
+  override def managedStyle = ManagedStyle.Ivy
+  val publishTo = "Etsy Repo" at "http://ivy.etsycorp.com"
 }

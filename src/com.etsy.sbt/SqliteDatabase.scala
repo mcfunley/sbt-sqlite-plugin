@@ -69,3 +69,4 @@ trait SqliteDatabase extends BasicScalaProject {
     ("sqlite3 " + cp(sqliteDatabasePath)) #< sqliteFixturesPath.asFile !
 
 }
+
