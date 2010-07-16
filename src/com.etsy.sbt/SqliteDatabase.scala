@@ -17,13 +17,20 @@ trait SqliteDatabase extends BasicScalaProject {
 
   def sqliteDatabaseAction = {
     if(testDBMissing || fixturesNewer || testDBTooSmall) {
-      cleanTestDB
+      cleanSqliteAction
       createTestDB
     } else {
       log.info("Test database up to date.")
     }
     None
   } 
+
+  override def cleanAction = super.cleanAction dependsOn(cleanSqlite)
+
+  lazy val cleanSqlite = task { cleanSqliteAction ; None } describedAs (
+    "Deletes the sqlite fixture database.")
+
+  def cleanSqliteAction = sqliteDatabasePath.asFile.delete
 
   override def testListeners = super.testListeners ++ Seq(new TestsListener {
     def doInit = sqliteDatabaseAction
@@ -60,8 +67,6 @@ trait SqliteDatabase extends BasicScalaProject {
       true
     } else false
   }
-
-  private def cleanTestDB = sqliteDatabasePath.asFile.delete
 
   private def cp(p : Path) = p.asFile.getCanonicalPath
 
